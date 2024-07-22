@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ticket Ordering System</title>
+    <style>
+        .seat { cursor: pointer; padding: 10px; margin: 5px; background-color: lightgray; }
+        .selected { background-color: green; color: white; }
+    </style>
+</head>
+<body>
+    <h1>Events</h1>
+    <button onclick="showSeats('Concert A')">Concert A</button>
+    <button onclick="showSeats('Movie B')">Movie B</button>
+
+    <h2 id="eventTitle"></h2>
+    <div id="seatsContainer"></div>
+
+    <script>
+        const events = {
+            "Concert A": { seats: [1, 2, 3, 4, 5], price: 50 },
+            "Movie B": { seats: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], price: 15 }
+        };
+
+        let selectedSeats = [];
+
+        function showSeats(eventName) {
+            const event = events[eventName];
+            document.getElementById('eventTitle').innerText = eventName;
+            const seatsContainer = document.getElementById('seatsContainer');
+            seatsContainer.innerHTML = '';
+            event.seats.forEach(seat => {
+                const seatElement = document.createElement('div');
+                seatElement.className = 'seat';
+                seatElement.innerText = seat;
+                seatElement.onclick = () => toggleSeatSelection(seat);
+                seatsContainer.appendChild(seatElement);
+            });
+        }
+
+        function toggleSeatSelection(seat) {
+            const index = selectedSeats.indexOf(seat);
+            if (index > -1) {
+                selectedSeats.splice(index, 1);
+            } else {
+                selectedSeats.push(seat);
+            }
+            updateSeatDisplay();
+        }
+
+        function updateSeatDisplay() {
+            const seatsContainer = document.getElementById('seatsContainer');
+            const seatElements = seatsContainer.getElementsByClassName('seat');
+            Array.from(seatElements).forEach(seatElement => {
+                const seatNumber = parseInt(seatElement.innerText);
+                if (selectedSeats.includes(seatNumber)) {
+                    seatElement.classList.add('selected');
+                } else {
+                    seatElement.classList.remove('selected');
+                }
+            });
+        }
+    </script>
+</body>
+</html>
